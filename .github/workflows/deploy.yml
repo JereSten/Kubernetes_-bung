@@ -9,16 +9,20 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  packages: write
+
 jobs:
   build:
-    name: build node
+    name: build node 
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [21.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -26,6 +30,26 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - name: install node modules
+      run: npm ci
+    - name: run node build 
+      run: npm run build --if-present
+
+
+  deploy:
+    name: deployment
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [21.x]
+    steps: 
+        - name: upload artifacts to github pages
+          uses: actions/upload-pages-artifact@v3
+          with:
+            name: github-pages
+            path: dist
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v4
+      
