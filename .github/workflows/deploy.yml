@@ -4,11 +4,11 @@
 name: Deploy
 
 on:
-  workflow_dispatch
-  #push:
-  #  branches: [ "main" ]
-  #pull_request:
-  #  branches: [ "main" ]
+  #workflow_dispatch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 permissions:
   contents: write
@@ -63,5 +63,5 @@ jobs:
           with: 
             context: "{{defaultContext}}"
             push: true
-            tags: ghcr.io/Kubernetes_-bung/uebungkub:latest
+            tags: ${{ steps.meta.outputs.tags }}
       
