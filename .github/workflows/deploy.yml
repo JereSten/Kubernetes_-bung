@@ -63,5 +63,5 @@ jobs:
           with: 
             context: "{{defaultContext}}"
             push: true
-            tags: ghcr.io/JereSten/Kubernetes_-bung/kubernetes_uebung:latest
+            tags: ghcr.io/jeresten/kubernetes_-bung/kubernetes_uebung:latest
       
